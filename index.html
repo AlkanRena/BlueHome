@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script> 
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+    <script>
+    const gameScore = [{
+        score: 0,
+        cheese: 0,
+        life: 3
+        }];
+</script>
+</head>
+<body>
+    <style>
+        
+        * {
+            background-color: #000;
+            color: #fff;
+            font-size: 16px;
+            font-family: 'VT323', monospace;
+        }
+        #game-container{
+            display: flex;
+            justify-content: center;
+        }
+        #game-container canvas {
+            width: 800px !important;
+            height: 600px !important;
+            border: 2px dashed #fff;
+        }
+        .score {
+            display: flex;
+            justify-content: center;
+        }
+    
+    </style>
+
+    <div id="index" class="score">
+        
+    </div>
+
+    <div id="game-container"></div>
+
+    <script src="js/main.js"></script>
+    <!-- <script src="js/index.js"></script> -->
+
+    <!-- <script src="./js/index.js" type="module"></script> -->
+</body>
+</html>

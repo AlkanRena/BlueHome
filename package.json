@@ -1,0 +1,24 @@
+{
+  "name": "blue_house",
+  "version": "1.0.0",
+  "description": "game",
+  "main": "index.js",
+  "scripts": {
+    "start": "./node_modules/.bin/http-server -s -o",
+    "update": "node ./build.js",
+    "screenshots": "node ./generate-screenshots.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "directory-tree": "^1.2.1",
+    "fs-extra": "^7.0.0",
+    "http-server": "^0.9.0",
+    "monaco-editor": "^0.8.3",
+    "puppeteer": "^1.8.0"
+  },
+  "dependencies": {
+    "phaser": "^3.15.1"
+  }
+}
