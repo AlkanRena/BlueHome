@@ -27,6 +27,7 @@
             display: flex;
             justify-content: center;
         }
+
         #game-container canvas {
             width: 800px !important;
             height: 600px !important;
@@ -40,15 +41,66 @@
         }
         input {
             border: 0px;
-    border-bottom: 6px dashed #fff;
+            border-bottom: 6px dashed #fff;
         }
-    
+        .instruction {
+            font-size: 24px;
+        }
+        .cheese-image {
+            background-image: url('./assets/images/cheese.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            padding: 16px 40px;
+        }
+        .dog-small-image {
+            background-image: url('./assets/images/small-dog.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            padding: 16px 40px;
+        }
+        .big-dog-image {
+            background-image: url('./assets/images/big-dog.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            padding: 16px 40px;
+        }
+        .ball-image {
+            background-image: url('./assets/images/ball.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            padding: 16px 40px;
+        }
+        .flex-block {
+            display: flex;
+            flex-flow: row;
+            justify-content: center;
+            align-content: center;
+        }
     </style>
-    <div id="game-container"></div>
-
+    
+        <div id="game-container"></div>
+        
     <div id="index" class="score">
-        <span>NAME:</span>
+        <span>NAME (Max 3 signs):</span>
         <input type="text" minlength="1" maxlenght="3" v-model="message" @change="changeValue">
+    </div>
+    <div class="flex-block">
+            <div class="instruction">
+                <p>Enemy:</p>
+                <p><span class="dog-small-image"></span> Small Dog</p>
+                <p>Will bring your life down</p>
+                <p></p>
+                <p><span class="big-dog-image"></span> Big Dog</p>
+                <p>Will steal your cheese or bring your life down</p>
+                <p></p>
+                <p><span class="ball-image"></span> Ball</p>
+                <p>Bouncing part of game</p>
+            </div><div class="instruction">
+                <p>Use Arrow keys</p>
+            <p>Rules:</p>
+            <p>You have 1 minute to collect cheese</p>
+            <p>This is cheese -> <span class="cheese-image"></span></p>
+        </div>
     </div>
     <!-- <script src="js/main.js"></script> -->
     <script type="module"  src="js/index.js"></script>

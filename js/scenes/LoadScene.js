@@ -21,7 +21,10 @@ export class LoadScene extends Phaser.Scene{
      
         this.load.image("cheese", "../assets/images/cheese.png");
         
-        
+        this.load.image('start', 'assets/images/Start.png');
+
+        this.load.image('background_image', 'assets/images/TitleScreen.png');
+        this.load.image('title', 'assets/images/Title.png');
 
         let loadingBar = this.add.graphics({
             fillStyle: {

@@ -21,18 +21,18 @@ export class GameOver extends Phaser.Scene{
         }
         this.add.text(16, 500, 'Life: ' + gameScore[0].life, { fontSize: '36px', fill: '#fff' });
 
-
-
-        this.add.text(250, 32, 'NAME', { fontSize: '36px', fill: '#fff' });
-        this.add.text(400, 32, 'SCORE', { fontSize: '36px', fill: '#fff' });
-        this.add.text(600, 32, 'CHEESE', { fontSize: '36px', fill: '#fff' });
+        this.add.text(16, 16, 'HIGHSCORE', { fontSize: '36px', fill: '#fff' });
+        this.add.text(100, 64, 'NAME', { fontSize: '36px', fill: '#fff' });
+        this.add.text(250, 64, 'SCORE', { fontSize: '36px', fill: '#fff' });
+        this.add.text(400, 64, 'CHEESE', { fontSize: '36px', fill: '#fff' });
+        this.add.text(600, 64, 'LIFE', { fontSize: '36px', fill: '#fff' });
         let score;
         if (localStorage.memberData) {
             score = JSON.parse(localStorage.memberData);
-            score.push({"name": gameScore[0].name, "score": gameScore[0].score, "cheese": gameScore[0].cheese})
+            score.push({"name": gameScore[0].name, "score": gameScore[0].score, "cheese": gameScore[0].cheese, "life": gameScore[0].life})
             localStorage.setItem("memberData", JSON.stringify(score))
         } else {
-            score = [{"name": gameScore[0].name, "score": gameScore[0].score, "cheese": gameScore[0].cheese}];
+            score = [{"name": gameScore[0].name, "score": gameScore[0].score, "cheese": gameScore[0].cheese, "life": gameScore[0].life}];
             localStorage.setItem("memberData", JSON.stringify(score));
         }
         let highScoreSorted = _.sortBy(score, 'score');
@@ -44,16 +44,17 @@ export class GameOver extends Phaser.Scene{
         if (numberOfScores > 8) {
             numberOfScores = 8;
         }
-        console.log(numberOfScores)
         
         let i = 0;
         while (i < numberOfScores) {
             let moveDown = i + 1;
-            console.log(i)
-            this.add.text(250, 32 * moveDown + 32, highScoreSorted[i].name, { fontSize: '36px', fill: '#fff' });
-            this.add.text(400, 32 * moveDown + 32, highScoreSorted[i].score, { fontSize: '36px', fill: '#fff' });
-            this.add.text(600, 32 * moveDown + 32, highScoreSorted[i].cheese, { fontSize: '36px', fill: '#fff' });
+            this.add.text(100, 32 * moveDown + 64, highScoreSorted[i].name, { fontSize: '36px', fill: '#fff' });
+            this.add.text(250, 32 * moveDown + 64, highScoreSorted[i].score, { fontSize: '36px', fill: '#fff' });
+            this.add.text(400, 32 * moveDown + 64, highScoreSorted[i].cheese, { fontSize: '36px', fill: '#fff' });
+            this.add.text(600, 32 * moveDown + 64, highScoreSorted[i].life, { fontSize: '36px', fill: '#fff' });
             i++;
-        } 
+        }
+
+        this.add.text(600, 500, 'Press F5 to start again', { fontSize: '36px', fill: '#fff' });
     }
 }
