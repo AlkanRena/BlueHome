@@ -1,0 +1,27 @@
+{"highscore":[
+    {
+        "name": "AAA",
+        "score": 1,
+        "cheese": 0
+    },
+    {
+        "name": "ABA",
+        "score": 2,
+        "cheese": 0
+    },
+    {
+        "name": "ACA",
+        "score": 3,
+        "cheese": 0
+    },
+    {
+        "name": "ADA",
+        "score": 4,
+        "cheese": 0
+    },
+    {
+        "name": "AEA",
+        "score": 5,
+        "cheese": 0
+    }
+]}

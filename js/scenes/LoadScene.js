@@ -20,7 +20,8 @@ export class LoadScene extends Phaser.Scene{
         this.load.atlas("enemy", "assets/images/enemy.png", "assets/images/enemy.json");
      
         this.load.image("cheese", "../assets/images/cheese.png");
-    
+        
+        
 
         let loadingBar = this.add.graphics({
             fillStyle: {

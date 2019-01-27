@@ -2,13 +2,16 @@
 <html>
 <head>
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.15.1/dist/phaser-arcade-physics.min.js"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="node_modules/underscore/underscore-min.js"></script> 
     <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
     <script>
     const gameScore = [{
+        name: "AAA",
         score: 0,
         cheese: 0,
         life: 3
-        }];
+        }];    
 </script>
 </head>
 <body>
@@ -17,7 +20,7 @@
         * {
             background-color: #000;
             color: #fff;
-            font-size: 16px;
+            font-size: 48px;
             font-family: 'VT323', monospace;
         }
         #game-container{
@@ -30,22 +33,50 @@
             border: 2px dashed #fff;
         }
         .score {
+            margin: 2rem;
             display: flex;
             justify-content: center;
+            align-items: center;
+        }
+        input {
+            border: 0px;
+    border-bottom: 6px dashed #fff;
         }
     
     </style>
-
-    <div id="index" class="score">
-        
-    </div>
-
     <div id="game-container"></div>
 
+    <div id="index" class="score">
+        <span>NAME:</span>
+        <input type="text" minlength="1" maxlenght="3" v-model="message" @change="changeValue">
+    </div>
     <!-- <script src="js/main.js"></script> -->
     <script type="module"  src="js/index.js"></script>
-    <!-- <script src="js/scenes/TitleScene.js"></script> -->
+    <script>
+        var app = new Vue({
+        el: '#index',
+        data: {
+            message: gameScore[0].name
+        },
+        methods:{
+            changeValue: function () {
 
-    <!-- <script src="./js/index.js" type="module"></script> -->
+                let text = this.message;
+                let numberText = text.length
+                console.log(text.length)
+                console.log(text.length <= 3)
+                console.log(numberText <= 3)
+                if (numberText <= 3) {
+                    gameScore[0].name = text;
+                } else {
+                    text = text.substr(0, 3);
+                    this.message = text;
+                    gameScore[0].name = text;
+                    alert('Tylko trzy litery');
+                }
+           },
+        } 
+        })
+    </script>
 </body>
 </html>

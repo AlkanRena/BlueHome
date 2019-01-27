@@ -1,6 +1,7 @@
 import {LoadScene} from './scenes/LoadScene.js';
 import {TitleScene} from './scenes/TitleScene.js';
 import {GameScene} from './scenes/GameScene.js';
+import {GameOver} from './scenes/GameOver.js';
 
 // let titleScene = new TitleScene();
 
@@ -17,7 +18,7 @@ const config = {
         }
     },
     scene: [
-        LoadScene, TitleScene, GameScene,
+        LoadScene, TitleScene, GameScene, GameOver,
     ]
 };
 

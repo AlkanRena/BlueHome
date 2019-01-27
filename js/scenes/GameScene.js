@@ -1,3 +1,5 @@
+import {GameOver} from './GameOver.js';
+
 let cursors;
 let player;
 let cheese;
@@ -13,6 +15,9 @@ let ball_3;
 let scoreText;
 let scoreCheese;
 let scoreLife;
+let Scenes;
+let canDie = true;
+let gameOver = true;
 let block_movement = true;
 let showDebug = false;
 
@@ -26,16 +31,7 @@ export class GameScene extends Phaser.Scene {
 
 
  preload() {
-    // Runs once, loads up assets like images and audio
-    this.load.image("tiles", "../assets/images/tileset.png");
 
-    this.load.tilemapTiledJSON("map", "../assets/images/level_1.json");
-
-    this.load.atlas("player", "assets/images/player.png", "assets/images/player.json");
-
-    this.load.atlas("enemy", "assets/images/enemy.png", "assets/images/enemy.json");
- 
-    this.load.image("cheese", "../assets/images/cheese.png");
   }
   
    create() {
@@ -49,7 +45,7 @@ export class GameScene extends Phaser.Scene {
   
     cheese = this.physics.add.sprite(170, 150, 'cheese');
     // Store the score in a variable, initialized at 0
-
+    Scenes = this.scene;
     const debugGraphics = this.add.graphics().setAlpha(0.75);
     Wall.setCollisionByProperty({ collides: true });
     const anims = this.anims;
@@ -144,9 +140,10 @@ export class GameScene extends Phaser.Scene {
     ball_2 = this.physics.add.sprite(spawnPoint_ball_2.x, spawnPoint_ball_2.y, "enemy", "ball");
     ball_3 = this.physics.add.sprite(spawnPoint_ball_3.x, spawnPoint_ball_3.y, "enemy", "ball");
 
-    scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '16px', fill: '#fff' });
-    scoreCheese = this.add.text(16, 32, 'Cheese: 0', { fontSize: '16px', fill: '#fff' });
-    scoreLife = this.add.text(16, 48, 'Life: 3', { fontSize: '16px', fill: '#fff' });
+    scoreText = this.add.text(16, 500, 'Score: 0', { fontSize: '16px', fill: '#fff' });
+    scoreCheese = this.add.text(200, 500, 'Cheese: 0', { fontSize: '16px', fill: '#fff' });
+    scoreLife = this.add.text(400, 500, 'Life: 3', { fontSize: '16px', fill: '#fff' });
+
 
     this.physics.add.collider(player, Wall);
     this.physics.add.collider(cheese, Wall);
@@ -278,12 +275,17 @@ export class GameScene extends Phaser.Scene {
   } else {
     rat_3.anims.play('rat-left', true);
   }
+
+  // if (gameScore[0].life <= 0 && gameOver) {
+  //   death();
+  // }
   }
+  
 
 }
 
 
-function hitCheese() {
+let hitCheese = function hitCheese() {
   // Change the position x and y of the coin randomly
   let cheesePosition = add_random_cheese();
   cheese.x = cheesePosition.x;
@@ -294,42 +296,55 @@ function hitCheese() {
   updateText(gameScore[0].score,gameScore[0].cheese,gameScore[0].life);
 }
 
-function hitCat() {
+let hitCat = function hitCat() {
   block_movement = false;
   let valX = -1 * player.body.velocity.x;
   let valY = -1 * player.body.velocity.y;
   player.body.setVelocity(valX, valY).setBounce(1, 1)
   player.anims.play("player-still", true);    
-  timedEvent = this.time.delayedCall(500, blockMovement, [], this);
-  gameScore[0].life -= 1;      
-  updateText(gameScore[0].score,gameScore[0].cheese,gameScore[0].life);
+  this.time.delayedCall(500, blockMovement, [], this);
+  if (canDie) {
+    gameScore[0].life -= 1; 
+    updateText(gameScore[0].score,gameScore[0].cheese,gameScore[0].life);     
+    canDie = false
+  }
+  if (gameScore[0].life <= 0) {
+    death();
+  }
 }
 
-function hitDog() {
+let hitDog = function hitDog() {
   block_movement = false;
   let valX = -1 * player.body.velocity.x;
   let valY = -1 * player.body.velocity.y;
   player.body.setVelocity(valX, valY).setBounce(1, 1)
-  player.anims.play("player-still", true);    
-  timedEvent = this.time.delayedCall(500, blockMovement, [], this);
+  player.anims.play("player-still", true);
+  this.time.delayedCall(500, blockMovement, [], this);
   if (gameScore[0].cheese != 0) {
     gameScore[0].cheese -= 1;
   } else {
-    gameScore[0].life -= 1;      
+    if (canDie) {
+      gameScore[0].life -= 1; 
+      updateText(gameScore[0].score,gameScore[0].cheese,gameScore[0].life);     
+      canDie = false
+    }
   }
   updateText(gameScore[0].score,gameScore[0].cheese,gameScore[0].life);
+  if (gameScore[0].life <= 0) {
+    death();
+  }
 }
 
-function hitBall() {
+let hitBall = function hitBall() {
   block_movement = false;
   let valX = -1 * player.body.velocity.x;
   let valY = -1 * player.body.velocity.y;
   player.body.setVelocity(valX, valY).setBounce(1, 1)
   player.anims.play("player-still", true);    
-  timedEvent = this.time.delayedCall(500, blockMovement, [], this);
+  this.time.delayedCall(500, blockMovement, [], this);
 }
 
-function add_random_cheese () {
+let add_random_cheese = function add_random_cheese () {
   let cheesePlace = [
     { x: 64, y: 64 },
     { x: 64, y: 150 },
@@ -355,12 +370,18 @@ function add_random_cheese () {
 
 }
 
-function blockMovement () {
+let blockMovement = function blockMovement () {
+  canDie = true;
   block_movement = true;
 }
 
-function updateText (score, cheese, life) {
+let updateText = function updateText (score, cheese, life) {
   scoreText.setText('Score: ' + score);
   scoreCheese.setText('Cheese: ' + cheese);
   scoreLife.setText('Life: ' + life);
+}
+
+let death = function death () {
+  gameOver = false;
+  Scenes.start('GameOver');
 }

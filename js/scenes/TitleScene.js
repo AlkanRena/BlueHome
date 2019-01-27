@@ -23,10 +23,11 @@ export class TitleScene extends Phaser.Scene {
         PlayGame.setOrigin(0,0);
 
         PlayGame.setInteractive();
-        this.scene.start('GameScene')
-        PlayGame.on('pointerdown', function (pointer) {
+        let Scenes = this.scene
+
+        PlayGame.on('pointerdown', function () {
             
-            this.scene.start('GameScene')
+            Scenes.start('GameScene')
 
         })
     }
