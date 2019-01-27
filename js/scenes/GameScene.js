@@ -1,25 +1,3 @@
-var config = {
-    type: Phaser.AUTO,
-    width: 400,
-    height: 300,
-    parent: "game-container",
-    pixelArt: true,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 0 }
-        }
-    },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
-};
-
-// import config from './config/config.js';
-
-const game = new Phaser.Game(config);
 let cursors;
 let player;
 let cheese;
@@ -38,8 +16,16 @@ let scoreLife;
 let block_movement = true;
 let showDebug = false;
 
+export class GameScene extends Phaser.Scene {
+  constructor () {
+      super({key: "GameScene"});
+  }
+// import config from './config/config.js';
 
-function preload() {
+
+
+
+ preload() {
     // Runs once, loads up assets like images and audio
     this.load.image("tiles", "../assets/images/tileset.png");
 
@@ -52,7 +38,7 @@ function preload() {
     this.load.image("cheese", "../assets/images/cheese.png");
   }
   
-  function create() {
+   create() {
     // Runs once, after all assets in preload are loaded
     const map = this.make.tilemap({key: "map"});
 
@@ -219,7 +205,7 @@ function preload() {
     // });
   }
   
-  function update(time, delta) {
+   update(time, delta) {
     const speed = 90;
     const prevVelocity = player.body.velocity.clone();
   // Stop any previous movement from the last frame
@@ -292,87 +278,89 @@ function preload() {
   } else {
     rat_3.anims.play('rat-left', true);
   }
-
   }
 
-  function hitCheese() {
-    // Change the position x and y of the coin randomly
-    let cheesePosition = add_random_cheese();
-    cheese.x = cheesePosition.x;
-    cheese.y = cheesePosition.y;
-    // Increment the score by 10
-    gameScore[0].score += 10;
-    gameScore[0].cheese += 1;
-    updateText(gameScore[0].score,gameScore[0].cheese,gameScore[0].life);
-  }
+}
 
-  function hitCat() {
-    block_movement = false;
-    let valX = -1 * player.body.velocity.x;
-    let valY = -1 * player.body.velocity.y;
-    player.body.setVelocity(valX, valY).setBounce(1, 1)
-    player.anims.play("player-still", true);    
-    timedEvent = this.time.delayedCall(500, blockMovement, [], this);
+
+function hitCheese() {
+  // Change the position x and y of the coin randomly
+  let cheesePosition = add_random_cheese();
+  cheese.x = cheesePosition.x;
+  cheese.y = cheesePosition.y;
+  // Increment the score by 10
+  gameScore[0].score += 10;
+  gameScore[0].cheese += 1;
+  updateText(gameScore[0].score,gameScore[0].cheese,gameScore[0].life);
+}
+
+function hitCat() {
+  block_movement = false;
+  let valX = -1 * player.body.velocity.x;
+  let valY = -1 * player.body.velocity.y;
+  player.body.setVelocity(valX, valY).setBounce(1, 1)
+  player.anims.play("player-still", true);    
+  timedEvent = this.time.delayedCall(500, blockMovement, [], this);
+  gameScore[0].life -= 1;      
+  updateText(gameScore[0].score,gameScore[0].cheese,gameScore[0].life);
+}
+
+function hitDog() {
+  block_movement = false;
+  let valX = -1 * player.body.velocity.x;
+  let valY = -1 * player.body.velocity.y;
+  player.body.setVelocity(valX, valY).setBounce(1, 1)
+  player.anims.play("player-still", true);    
+  timedEvent = this.time.delayedCall(500, blockMovement, [], this);
+  if (gameScore[0].cheese != 0) {
+    gameScore[0].cheese -= 1;
+  } else {
     gameScore[0].life -= 1;      
-    updateText(gameScore[0].score,gameScore[0].cheese,gameScore[0].life);
   }
+  updateText(gameScore[0].score,gameScore[0].cheese,gameScore[0].life);
+}
 
-  function hitDog() {
-    block_movement = false;
-    let valX = -1 * player.body.velocity.x;
-    let valY = -1 * player.body.velocity.y;
-    player.body.setVelocity(valX, valY).setBounce(1, 1)
-    player.anims.play("player-still", true);    
-    timedEvent = this.time.delayedCall(500, blockMovement, [], this);
-    if (gameScore[0].cheese != 0) {
-      gameScore[0].cheese -= 1;
-    } else {
-      gameScore[0].life -= 1;      
-    }
-    updateText(gameScore[0].score,gameScore[0].cheese,gameScore[0].life);
-  }
+function hitBall() {
+  block_movement = false;
+  let valX = -1 * player.body.velocity.x;
+  let valY = -1 * player.body.velocity.y;
+  player.body.setVelocity(valX, valY).setBounce(1, 1)
+  player.anims.play("player-still", true);    
+  timedEvent = this.time.delayedCall(500, blockMovement, [], this);
+}
 
-  function hitBall() {
-    block_movement = false;
-    let valX = -1 * player.body.velocity.x;
-    let valY = -1 * player.body.velocity.y;
-    player.body.setVelocity(valX, valY).setBounce(1, 1)
-    player.anims.play("player-still", true);    
-    timedEvent = this.time.delayedCall(500, blockMovement, [], this);
-  }
+function add_random_cheese () {
+  let cheesePlace = [
+    { x: 64, y: 64 },
+    { x: 64, y: 150 },
+    { x: 64, y: 300 },
+    { x: 64, y: 400 },
+    { x: 170, y: 150 },
+    { x: 170, y: 300 },
+    { x: 170, y: 400 },
+    { x: 250, y: 64 },
+    { x: 400, y: 250 },
+    { x: 400, y: 400 },
+    { x: 500, y: 64 },
+    { x: 500, y: 250 },
+    { x: 624, y: 32 },
+    { x: 624, y: 150 },
+    { x: 624, y: 250 },
+    { x: 624, y: 400 },
 
-  function add_random_cheese () {
-    let cheesePlace = [
-      { x: 64, y: 64 },
-      { x: 64, y: 150 },
-      { x: 64, y: 300 },
-      { x: 64, y: 400 },
-      { x: 170, y: 150 },
-      { x: 170, y: 300 },
-      { x: 170, y: 400 },
-      { x: 250, y: 64 },
-      { x: 400, y: 250 },
-      { x: 400, y: 400 },
-      { x: 500, y: 64 },
-      { x: 500, y: 250 },
-      { x: 624, y: 32 },
-      { x: 624, y: 150 },
-      { x: 624, y: 250 },
-      { x: 624, y: 400 },
+  ];
+  let positionCheese = Math.floor(Math.random()*cheesePlace.length);
+  
+  return cheesePlace[positionCheese];
 
-    ];
-    let positionCheese = Math.floor(Math.random()*cheesePlace.length);
-    
-    return cheesePlace[positionCheese];
- 
-  }
+}
 
-  function blockMovement () {
-    block_movement = true;
-  }
+function blockMovement () {
+  block_movement = true;
+}
 
-  function updateText (score, cheese, life) {
-    scoreText.setText('Score: ' + score);
-    scoreCheese.setText('Cheese: ' + cheese);
-    scoreLife.setText('Life: ' + life);
-  }
+function updateText (score, cheese, life) {
+  scoreText.setText('Score: ' + score);
+  scoreCheese.setText('Cheese: ' + cheese);
+  scoreLife.setText('Life: ' + life);
+}
